@@ -1,0 +1,60 @@
+name: Sanitize image metadata
+on:
+  push:
+    paths:
+      - '**/*.jpg'
+      - '**/*.jpeg'
+      - '**/*.png'
+  pull_request:
+    paths:
+      - '**/*.jpg'
+      - '**/*.jpeg'
+      - '**/*.png'
+
+jobs:
+  metadata-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install exiftool
+        run: sudo apt-get update && sudo apt-get install -y libimage-exiftool-perl
+
+      - name: Scan for metadata
+        id: scan
+        run: |
+          echo "🔍 Scanning images for metadata..."
+          mkdir -p reports
+          found=0
+          for img in $(find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \)); do
+            count=$(exiftool "$img" | grep -v "File" | wc -l)
+            if [ "$count" -gt 5 ]; then
+              echo "⚠️  Metadata found in: $img" | tee -a reports/metadata-report.txt
+              found=$((found+1))
+            fi
+          done
+          echo "Scan complete. Found $found image(s) with metadata."
+
+          # Set output for summary
+          echo "found=$found" >> $GITHUB_OUTPUT
+
+      - name: Summarize results
+        if: always()
+        run: |
+          if [ -f reports/metadata-report.txt ]; then
+            echo "### Metadata Scan Report" >> $GITHUB_STEP_SUMMARY
+            cat reports/metadata-report.txt >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ No metadata detected." >> $GITHUB_STEP_SUMMARY
+
+      # Warn only (default)
+      - name: Warn if metadata present
+        if: steps.scan.outputs.found != '0'
+        run: |
+          echo "::warning::Some images contain metadata. Please sanitize before merge."
+
+      # To fail instead, uncomment below:
+      # - name: Fail if metadata present
+      #   if: steps.scan.outputs.found != '0'
+      #   run: exit 1

@@ -1,7 +1,6 @@
----
 # Network‑Visibility Commands
 
-Below are vetted one‑liners for quick reconnaissance. All commands assume you have the required tools installed (see the README for a package list).
+Below are vetted one‑liners for quick reconnaissance. All commands assume you have the required tools installed (see the README for a package list). Feel free to add more commands later—just follow the same heading/format pattern.
 
 ---
 
@@ -10,7 +9,7 @@ Below are vetted one‑liners for quick reconnaissance. All commands assume you 
 # Ping‑scan the entire /24 subnet and then probe the most common ports (1‑1000)
 sudo nmap -sn 192.168.1.0/24 && sudo nmap -p 1-1000 192.168.1.0/24
 Copy
--sn = host discovery only.
+-sn = host discovery only.
 Second pass enumerates the most frequently used ports.
 2️⃣ Netdiscover – Passive ARP sniffing
 sudo netdiscover -r 192.168.1.0/24 -i eth0
@@ -30,7 +29,7 @@ Provides a concise table of IP ↔ MAC ↔ Vendor for every device on th
 5️⃣ netscan (Rust) – Parallel port scanner
 netscan -c 1000 -p 22,80,443 192.168.1.0/24
 Copy
--c sets concurrency (higher = faster).
+-c sets concurrency (higher = faster).
 Great for larger subnets when speed matters.
 6️⃣ Combined snapshot (single line)
 {

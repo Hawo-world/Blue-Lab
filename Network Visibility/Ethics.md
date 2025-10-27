@@ -1,8 +1,8 @@
 ---
 
-## 3️⃣ `ethics.md`
+## 3️⃣ Ethics
 
-```markdown
+
 # Ethics & Responsible Use Statement
 
 ## 1. Intent

@@ -1,8 +1,4 @@
 ---
-
-## 2️⃣
-
-
 # Network‑Visibility Commands
 
 Below are vetted one‑liners for quick reconnaissance. All commands assume you have the required tools installed (see the README for a package list).

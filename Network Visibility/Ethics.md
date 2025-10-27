@@ -1,6 +1,6 @@
 ---
 
-## 3️⃣ Ethics
+## 3️⃣
 
 
 # Ethics & Responsible Use Statement

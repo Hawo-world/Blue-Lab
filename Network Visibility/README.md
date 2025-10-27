@@ -21,12 +21,6 @@ sudo apt install nmap netdiscover arp-scan iproute2
 Copy
 ⚠️ Important: Many of the commands require elevated privileges (sudo). Use them only on networks you own or have explicit permission to test.
 
-Contributing
-We welcome additions! If you discover a useful flag, a new tool, or an improved workflow, please:
-
-Fork the repo.
-Add your changes under network visibility/.
-Open a Pull Request with a brief description of the contribution and why it adds value.
 Stay curious, stay safe.
 — The Blue‑lab Team
 

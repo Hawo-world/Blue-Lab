@@ -34,7 +34,7 @@ Built with Python and Streamlit for a simple, beginner-friendly web interface.
 
 Clone or download this repository:
 
-git clone https://github.com/yourusername/educational-port-scanner.git
+git clone 
 cd educational-port-scanner
 
 

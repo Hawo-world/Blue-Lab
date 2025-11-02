@@ -1,4 +1,4 @@
-🛡️ Educational Port Scanner
+## 🛡️ Educational Port Scanner
 
 An educational tool that helps learners understand open ports, network exposure, and cybersecurity fundamentals — safely and ethically.
 
@@ -12,7 +12,9 @@ and how to mitigate those risks
 
 Built with Python and Streamlit for a simple, beginner-friendly web interface.
 
-🚀 Features
+---
+
+## 🚀 Features
 
 🧠 Educational explanations for each detected service
 
@@ -26,7 +28,9 @@ Built with Python and Streamlit for a simple, beginner-friendly web interface.
 
 🌈 Clean, interactive UI powered by Streamlit
 
-⚙️ Installation
+---
+
+## ⚙️ Installation
 
 Clone or download this repository:
 
@@ -50,7 +54,9 @@ If you don’t have a requirements.txt yet, you can install Streamlit directly:
 
 pip install streamlit
 
-▶️ How to Run
+---
+
+## ▶️ How to Run
 
 Launch the app with:
 
@@ -61,7 +67,9 @@ Then open the local web interface (usually at http://localhost:8501).
 
 Enter your IP (e.g. 127.0.0.1 or 192.168.x.x), choose ports, confirm you have permission, and click Start Scan.
 
-🧩 Example Output
+---
+
+## 🧩 Example Output
 
 Open ports are listed with:
 
@@ -75,7 +83,9 @@ Mitigation tips
 
 Results can be downloaded as scan_results.json.
 
-🧱 Architecture Overview
+---
+
+## 🧱 Architecture Overview
 
 Language: Python 3
 
@@ -87,7 +97,9 @@ Output format: JSON + on-screen summary
 
 Default scan set: common service ports (21, 22, 23, 25, 80, 443, 3306, 3389, 445, 5900, 6379)
 
-🔐 Privacy & Data Policy
+---
+
+## 🔐 Privacy & Data Policy
 
 This app runs entirely on your local machine.
 
@@ -97,24 +109,14 @@ When you scan 127.0.0.1 or a private IP (e.g. 192.168.x.x), the scan happens onl
 
 If you scan a public IP, the remote server will see your public IP, not the developer’s.
 
-⚠️ Legal & Ethical Disclaimer
+---
+
+## ⚠️ Legal & Ethical Disclaimer
 
 This project is for educational use only.
 You must only scan systems you own or have explicit permission to test. Unauthorized scanning of external networks may be illegal in your jurisdiction. The authors assume no responsibility for misuse or damage caused by this tool.
 
-🌱 Contributing
-
-Pull requests are welcome! If you’d like to improve explanations, add new ports, or enhance the UI:
-
-Fork the repo
-
-Create a feature branch (git checkout -b feature-name)
-
-Commit your changes (git commit -m "Added new port info")
-
-Push to your fork and open a PR
-
-Please follow the privacy and safety guidelines in CONTRIBUTING.md.
+---
 
 📜 License
 

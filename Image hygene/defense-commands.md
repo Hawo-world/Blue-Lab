@@ -1,9 +1,13 @@
-Image hygiene — defensive commands & automation
+## Image hygiene — defensive commands & automation
 
 Purpose: concrete, safe commands and scripts to remove metadata, downsample, redact, verify, and automate safe publishing of images.
 Warning: run these only on images you own or are authorized to process. Keep originals backed up and hashed before any mass processing.
 
-Table of contents
+---
+
+## Table of contents
+
+---
 
 Quick principles
 
@@ -25,7 +29,9 @@ CI / GitHub Action: auto-strip on push
 
 Best practices, logging & safety
 
-1) Quick principles
+---
+
+## 1) Quick principles
 
 Always keep an immutable archive of originals (read-only, hashed).
 
@@ -37,7 +43,9 @@ Automate stripping at the point of publication (CMS, CI) so public images are sa
 
 Remove GPS/EXIF and also consider downsampling or cropping to remove contextual detail.
 
-2) Tools referenced
+---
+
+## 2) Tools referenced
 
 exiftool — metadata read/remove (recommended).
 
@@ -53,7 +61,9 @@ python + Pillow — programmatic sanitization (example included).
 
 (Install these using your platform package manager if needed — e.g., apt, brew, choco — but do not publish extraction tools or instructions for misuse.)
 
-3) Inspect metadata (verify what’s present)
+---
+
+## 3) Inspect metadata (verify what’s present)
 
 Run these read-only checks on files you own to see what metadata exists.
 
@@ -66,12 +76,13 @@ identify -verbose image.jpg
 # 3) Quick list of common GPS/Date/Model fields
 exiftool -gps:all -DateTimeOriginal -Model -Make image.jpg
 
-
 Always run these before changes to capture the baseline. Store a checksum of the original:
 
 sha256sum original/image.jpg > original/image.jpg.sha256
 
-4) Remove metadata (safe defensive commands)
+---
+
+## 4) Remove metadata (safe defensive commands)
 Single file — exiftool (recommended)
 # Create a cleaned copy (preserves original)
 exiftool -all= -o cleaned/image_stripped.jpg original/image.jpg
@@ -99,7 +110,9 @@ done
 
 Note: exiftool supports -overwrite_original_in_place if you need in-place, but do backups first.
 
-5) Downsample / reduce resolution (defensive)
+---
+
+## 5) Downsample / reduce resolution (defensive)
 
 Lower resolution and/or recompress to remove fine-grained details that might leak information.
 
@@ -115,7 +128,9 @@ For lossless-ish recompression with better quality control (JPEG):
 # Using jpegoptim to recompress and remove ancillary markers (no metadata)
 jpegoptim --strip-all --max=85 cleaned/image.jpg
 
-6) Redaction (blur, pixelate, or crop sensitive areas)
+---
+
+## 6) Redaction (blur, pixelate, or crop sensitive areas)
 
 These are defensive techniques to remove visible sensitive content (screens, badges, faces, license plates) before publishing.
 
@@ -136,7 +151,9 @@ convert original/image.jpg \
 
 Tip: for repeatable redaction workflows, note the coordinates in your experiment log.
 
-7) Windows / PowerShell snippets
+---
+
+## 7) Windows / PowerShell snippets
 
 Assuming exiftool(-k).exe is in PATH or the current folder:
 
@@ -152,7 +169,9 @@ Get-ChildItem .\original\*.jpg | ForEach-Object {
   .\exiftool.exe -all= -o $out $_.FullName
 }
 
-8) Python script for sanitization (Pillow)
+---
+
+## 8) Python script for sanitization (Pillow)
 
 A simple, safe script that loads an image and saves a new file without EXIF. This is useful when you want language-level control or to integrate into apps.
 
@@ -184,7 +203,9 @@ if __name__ == "__main__":
 
 Use: python sanitize_image.py original/image.jpg cleaned/image.jpg 1920 1080
 
-9) CI / GitHub Action: auto-strip on push (example)
+---
+
+## 9) CI / GitHub Action: auto-strip on push (example)
 
 This example runs in CI to sanitize images in a specific folder before they are published. Design for your org’s workflow — do not run blindly on all files without approvals.
 
@@ -223,7 +244,9 @@ jobs:
 
 Note: add policy gates and approvals — don’t auto-push sanitized assets without human review in sensitive orgs.
 
-10) Best practices, logging & safety
+---
+
+## 10) Best practices, logging & safety
 
 Provenance: store SHA-256 of originals and cleaned files; log who performed sanitization and when.
 

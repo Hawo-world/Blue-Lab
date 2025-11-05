@@ -67,13 +67,13 @@ python + Pillow — programmatic sanitization (example included).
 
 Run these read-only checks on files you own to see what metadata exists.
 
-# 1) Basic EXIF summary (exiftool is most informative)
+- 1) Basic EXIF summary (exiftool is most informative)
 exiftool image.jpg
 
-# 2) Full ImageMagick verbose header
+- 2) Full ImageMagick verbose header
 identify -verbose image.jpg
 
-# 3) Quick list of common GPS/Date/Model fields
+- 3) Quick list of common GPS/Date/Model fields
 exiftool -gps:all -DateTimeOriginal -Model -Make image.jpg
 
 Always run these before changes to capture the baseline. Store a checksum of the original:
@@ -84,23 +84,23 @@ sha256sum original/image.jpg > original/image.jpg.sha256
 
 ## 4) Remove metadata (safe defensive commands)
 Single file — exiftool (recommended)
-# Create a cleaned copy (preserves original)
+### Create a cleaned copy (preserves original)
 exiftool -all= -o cleaned/image_stripped.jpg original/image.jpg
 
-# Overwrite the original (use with caution; ensure backup exists)
+### Overwrite the original (use with caution; ensure backup exists)
 exiftool -all= -overwrite_original_in_place original/image.jpg
 
 ImageMagick (re-encode + strip)
-# Creates a sanitized re-encoded copy and strips metadata
+### Creates a sanitized re-encoded copy and strips metadata
 convert original/image.jpg -strip cleaned/image_stripped.jpg
 
 PNG-specific (optimize & strip)
-# Convert + strip then optimize (keeps visual content)
+### Convert + strip then optimize (keeps visual content)
 convert original/image.png -strip cleaned/image.png
 optipng cleaned/image.png
 
 Batch (Linux/macOS) — using exiftool
-# Strip metadata from all JPEGs in a folder and write cleaned/ copies
+### Strip metadata from all JPEGs in a folder and write cleaned/ copies
 mkdir -p cleaned
 for f in originals/*.jpg; do
   fname=$(basename "$f")
@@ -116,16 +116,16 @@ Note: exiftool supports -overwrite_original_in_place if you need in-place, but d
 
 Lower resolution and/or recompress to remove fine-grained details that might leak information.
 
-# Downsample to max 1920x1080 (keeps aspect ratio) and strip metadata
+### Downsample to max 1920x1080 (keeps aspect ratio) and strip metadata
 convert original/image.jpg -resize 1920x1080\> -strip cleaned/image_downsampled.jpg
 
-# Recompress JPEG with quality target and strip
+### Recompress JPEG with quality target and strip
 convert original/image.jpg -quality 85 -strip cleaned/image_q85.jpg
 
 
 For lossless-ish recompression with better quality control (JPEG):
 
-# Using jpegoptim to recompress and remove ancillary markers (no metadata)
+### Using jpegoptim to recompress and remove ancillary markers (no metadata)
 jpegoptim --strip-all --max=85 cleaned/image.jpg
 
 ---
@@ -135,15 +135,15 @@ jpegoptim --strip-all --max=85 cleaned/image.jpg
 These are defensive techniques to remove visible sensitive content (screens, badges, faces, license plates) before publishing.
 
 Crop out sensitive regions
-# Crop: convert input -crop <width>x<height>+<x>+<y> output
+### Crop: convert input -crop <width>x<height>+<x>+<y> output
 convert original/image.jpg -crop 1000x600+50+200 +repage cleaned/image_cropped.jpg
 
 Blur (Gaussian blur)
-# Blur a region — use -region to limit effect (ImageMagick)
+### Blur a region — use -region to limit effect (ImageMagick)
 convert original/image.jpg -region 400x200+50+100 -blur 0x8 cleaned/image_blurred.jpg
 
 Pixelate (scale down & back up to pixelate)
-# Pixelate a region by scaling it down then up
+### Pixelate a region by scaling it down then up
 convert original/image.jpg \
   \( -clone 0 -crop 200x200+50+100 +repage -resize 10x10 -resize 200x200 \) \
   -compose over -composite cleaned/image_pixelated.jpg
@@ -157,13 +157,13 @@ Tip: for repeatable redaction workflows, note the coordinates in your experiment
 
 Assuming exiftool(-k).exe is in PATH or the current folder:
 
-# Create cleaned directory
+### Create cleaned directory
 New-Item -ItemType Directory -Path .\cleaned -Force
 
-# Strip metadata for a single file (exiftool)
+### Strip metadata for a single file (exiftool)
 .\exiftool.exe -all= -o .\cleaned\image_stripped.jpg .\original\image.jpg
 
-# Batch (PowerShell)
+### Batch (PowerShell)
 Get-ChildItem .\original\*.jpg | ForEach-Object {
   $out = ".\cleaned\$($_.Name)"
   .\exiftool.exe -all= -o $out $_.FullName
@@ -175,17 +175,17 @@ Get-ChildItem .\original\*.jpg | ForEach-Object {
 
 A simple, safe script that loads an image and saves a new file without EXIF. This is useful when you want language-level control or to integrate into apps.
 
-# sanitize_image.py
+### sanitize_image.py
 from PIL import Image
 import sys
 from pathlib import Path
 
 def sanitize(in_path, out_path, resize=None, quality=85):
     img = Image.open(in_path)
-    # If resize specified as (w, h), do a thumbnail (keeps aspect)
+    ### If resize specified as (w, h), do a thumbnail (keeps aspect)
     if resize:
         img.thumbnail(resize)
-    # Save without exif by not passing exif parameter
+    ### Save without exif by not passing exif parameter
     img.save(out_path, quality=quality)
 
 if __name__ == "__main__":
